@@ -1,7 +1,8 @@
 #include"cpn.h"
+#include"Lexer.h"
 #include<algorithm>
 
-bool exist_in(vector<string> v, string s)//ÕÒµ½·µ»Øtrue
+bool exist_in(vector<string> v, string s)//æ‰¾åˆ°è¿”å›true
 {
 	for (unsigned int i = 0; i < v.size(); i++)
 	{
@@ -11,7 +12,7 @@ bool exist_in(vector<string> v, string s)//ÕÒµ½·µ»Øtrue
 	return false;
 }
 
-vector<string> find_previous_P(C_Petri &petri, string T)//±äÇ¨ÕÒÇ°¼¯¿âËùÔÊĞíÖ´ĞĞ»¡£¨ÌØÊâ´¦Àí£©
+vector<string> find_previous_P(C_Petri &petri, string T)//å˜è¿æ‰¾å‰é›†åº“æ‰€å…è®¸æ‰§è¡Œå¼§ï¼ˆç‰¹æ®Šå¤„ç†ï¼‰
 {
 	vector<string> v;
 	for (int i = 0; i < petri.arcnum; i++)
@@ -107,7 +108,7 @@ vector<string> forward_exist_T(C_Petri &petri, vector<string> change_T, string p
 	return T;
 }
 
-void back_forward_slicing(C_Petri &petri, vector<string> place, vector<string> &final_P, vector<string>&final_T, vector<Arc> &final_Arc)//±ä»¯Ç°Íøpetri,Ô¤´¦ÀíºóµÄ¿âËùÊı×éplace
+void back_forward_slicing(C_Petri &petri, vector<string> place, vector<string> &final_P, vector<string>&final_T, vector<Arc> &final_Arc)//å˜åŒ–å‰ç½‘petri,é¢„å¤„ç†åçš„åº“æ‰€æ•°ç»„place
 {
 	vector<string> P1, P2, P_done, T1, T2;
 	P1 = place;
@@ -117,15 +118,15 @@ void back_forward_slicing(C_Petri &petri, vector<string> place, vector<string> &
 		{
 			for (int j = 0; j < petri.arcnum; j++)
 			{
-				//²»ÄÜÊÇtoken²»¸Ä±äµÄ±äÇ¨
+				//ä¸èƒ½æ˜¯tokenä¸æ”¹å˜çš„å˜è¿
 				if (exist_arc(petri, petri.arc[j].target, petri.arc[j].source, petri.arc[j].V))
 					continue;
 				if (petri.arc[j].source == P1[i])
 				{
-					if (!exist_in(T1, petri.arc[j].target))//²»ÔÚT1ÄÚ
+					if (!exist_in(T1, petri.arc[j].target))//ä¸åœ¨T1å†…
 					{
 
-						if (petri.arc[j].V != "executed"&&petri.arc[j].V != "executed#")//²»ÊÇÖ´ĞĞ»¡
+						if (petri.arc[j].V != "executed"&&petri.arc[j].V != "executed#")//ä¸æ˜¯æ‰§è¡Œå¼§
 						{
 
 							for (int k = 0; k < petri.p_num; k++)
@@ -157,11 +158,11 @@ void back_forward_slicing(C_Petri &petri, vector<string> place, vector<string> &
 				}
 				else if (petri.arc[j].target == P1[i])
 				{
-					if (!exist_in(T1, petri.arc[j].source))//²»ÔÚT1ÄÚ
+					if (!exist_in(T1, petri.arc[j].source))//ä¸åœ¨T1å†…
 					{
-						if (petri.arc[j].V != "executed"&&petri.arc[j].V != "executed#")//²»ÊÇÖ´ĞĞ»¡
+						if (petri.arc[j].V != "executed"&&petri.arc[j].V != "executed#")//ä¸æ˜¯æ‰§è¡Œå¼§
 						{
-							//²»ÄÜÊÇtoken²»¸Ä±äµÄ¿âËù
+							//ä¸èƒ½æ˜¯tokenä¸æ”¹å˜çš„åº“æ‰€
 							for (int k = 0; k < petri.p_num; k++)
 							{
 								if (petri.place[k].name == P1[i])
@@ -260,7 +261,7 @@ void post_process(C_Petri &petri, vector<string> change_P, vector<string> change
 void initial_changeAnalyse_cpn(C_Petri &petri1, C_Petri &petri, vector<string> change_P, vector<string> change_T, vector<Arc> &change_Arc)
 {
 	cout << endl;
-	cout << "Ïà¹Ø¿âËù£º" << endl;
+	cout << "ç›¸å…³åº“æ‰€ï¼š" << endl;
 
 	petri1.p_num = change_P.size();
 	petri1.t_num = change_T.size();
@@ -277,7 +278,7 @@ void initial_changeAnalyse_cpn(C_Petri &petri1, C_Petri &petri, vector<string> c
 	}
 
 	cout << endl;
-	cout << "Ïà¹Ø±äÇ¨£º" << endl;
+	cout << "ç›¸å…³å˜è¿ï¼š" << endl;
 	for (unsigned int i = 0; i < change_T.size(); i++)
 	{
 		cout << change_T[i] << "    ";
@@ -288,7 +289,7 @@ void initial_changeAnalyse_cpn(C_Petri &petri1, C_Petri &petri, vector<string> c
 		}
 	}
 	cout << endl;
-	cout << "Ïà¹Ø»¡£º" << endl;
+	cout << "ç›¸å…³å¼§ï¼š" << endl;
 	for (unsigned int i = 0; i < change_Arc.size(); i++)
 	{
 		cout << change_Arc[i].source << "------->" << change_Arc[i].target << endl;
@@ -329,12 +330,43 @@ void sort_change(vector<string> &change_P, vector<string> &change_T)
 	}
 }
 
+string find_relateP(C_Petri petri, string transition)
+{
+	for (unsigned int i = 0; i < petri.arcnum; i++)
+	{
+		
+		if(petri.arc[i].target == transition)
+		{
+			string V = petri.arc[i].V;
+			if (V != "executed"&&V != "#"&&V != "executedP")
+				return petri.arc[i].source;
+		}
+	}
+	cout << "can't find relateP!" << endl;
+	exit(1);
+	return "";
+}
+
 C_Petri changeAnalyse(C_Petri &petri, vector<string> change_places)
 {
-	vector<string> change_P, change_T;
+	vector<string> change_P, change_T, formula_P, formula_T;
 	vector<Arc> change_Arc;
-	back_forward_slicing(petri, change_places, change_P, change_T, change_Arc);
 
+	//æå–å…¬å¼ä¸­çš„åº“æ‰€å˜è¿ï¼Œå¹¶å°†å˜è¿è½¬åŒ–ä¸ºåº“æ‰€
+	getPTinformula("formulaC.txt", formula_P, formula_T);
+	getPTinformula("formulaF.txt", formula_P, formula_T);
+	for (unsigned int i = 0; i < formula_T.size(); i++)
+		formula_P.push_back(find_relateP(petri, formula_T[i]));
+	change_places.insert(change_places.end(), formula_P.begin(), formula_P.end());
+
+	sort(change_places.begin(), change_places.end());
+	change_places.erase(unique(change_places.begin(), change_places.end()), change_places.end());
+
+	//change_T.insert(change_T.end(), formula_T.begin(), formula_T.end());
+
+
+	back_forward_slicing(petri, change_places, change_P, change_T, change_Arc);
+	
 	post_process(petri, change_P, change_T, change_Arc);
 	sort_change(change_P, change_T);
 	C_Petri petri1;
